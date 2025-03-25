@@ -131,4 +131,47 @@ MACHINE = "rockchip-rk3588-rock-5b"
 step5. 위 처럼 준비해놓으면 컴파일이 된다
 ----------------------------------------------------------------------------------
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ source ./oe-init-build-env
+
+
+----------------------------------------------------------------------------------
+step5.1. 이 데렉토리는 어디서 생긴 브랜치?
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ ls -lh
+total 124K
+-rw-rw-r-- 1 seokgh seokgh  612  3월 25 23:44 bblayers.conf
+-rw-rw-r-- 1 seokgh seokgh  516  3월 22 20:10 conf-notes.txt
+-rw-rw-r-- 1 seokgh seokgh   77  3월 22 20:10 conf-summary.txt
+drwxrwxr-x 3 seokgh seokgh 4.0K  3월 25 23:30 include
+lrwxrwxrwx 1 seokgh seokgh   28  3월 22 22:04 local.conf -> rockchip-rk3588-rock-5b.conf
+-rw-rw-r-- 1 seokgh seokgh   85  3월 22 20:08 rockchip-px30-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   74  3월 22 20:08 rockchip-rk3288-evb-act8846.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3288-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   71  3월 22 20:08 rockchip-rk3288w-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3326-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   90  3월 22 20:08 rockchip-rk3399pro-evb.conf
+-rw-rw-r-- 1 seokgh seokgh  102  3월 22 20:08 rockchip-rk3399-sapphire-excavator.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3528-radxa-e20c.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2a.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2f.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3562-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3566-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3568-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 25 23:30 rockchip-rk3576-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3588-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   91  3월 22 22:04 rockchip-rk3588-rock-5b.conf
+-rw-rw-r-- 1 seokgh seokgh   96  3월 25 23:30 rockchip-rk3588-rock-5b-plus.conf
+-rw-rw-r-- 1 seokgh seokgh   94  3월 25 23:30 rockchip-rk3588-rock-5-itx.conf
+-rw-rw-r-- 1 seokgh seokgh   91  3월 25 23:30 rockchip-rk3588-rock-5t.conf
+-rw-rw-r-- 1 seokgh seokgh   97  3월 22 20:08 rockchip-rk3588s-radxa-cm5-io.conf
+-rw-rw-r-- 1 seokgh seokgh  105  3월 25 23:30 rockchip-rk3588s-radxa-cm5-rpi-cm4-io.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e52c.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e54c.conf
+-rw-rw-r-- 1 seokgh seokgh   97  3월 25 23:30 rockchip-rk3588s-radxa-nx5-io.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3588s-rock-5a.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 22 20:08 rockchip-rk3588s-rock-5c.conf
+-rw-rw-r-- 1 seokgh seokgh    0  3월 22 20:08 sanity.conf
+-rw-rw-r-- 1 seokgh seokgh   33  3월 22 20:10 templateconf.cfg
+
+
+
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-image-weston
