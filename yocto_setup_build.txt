@@ -127,6 +127,10 @@ include include/demo.conf
 
 MACHINE = "rockchip-rk3588-rock-5b"
 
+DISTRO_FEATURES:append = " x11"
+PACKAGECONFIG:remove:elfutils = "debuginfod"
+
+
 ----------------------------------------------------------------------------------
 step5. 위 처럼 준비해놓으면 컴파일이 된다
 ----------------------------------------------------------------------------------
@@ -138,11 +142,11 @@ step5.1. 이 데렉토리는 어디서 생긴 브랜치?
 ----------------------------------------------------------------------------------
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ ls -lh
 total 124K
--rw-rw-r-- 1 seokgh seokgh  612  3월 25 23:44 bblayers.conf
+-rw-rw-r-- 1 seokgh seokgh  612  3월 25 23:44 bblayers.conf                                  //
 -rw-rw-r-- 1 seokgh seokgh  516  3월 22 20:10 conf-notes.txt
 -rw-rw-r-- 1 seokgh seokgh   77  3월 22 20:10 conf-summary.txt
 drwxrwxr-x 3 seokgh seokgh 4.0K  3월 25 23:30 include
-lrwxrwxrwx 1 seokgh seokgh   28  3월 22 22:04 local.conf -> rockchip-rk3588-rock-5b.conf
+lrwxrwxrwx 1 seokgh seokgh   28  3월 22 22:04 local.conf -> rockchip-rk3588-rock-5b.conf      //
 -rw-rw-r-- 1 seokgh seokgh   85  3월 22 20:08 rockchip-px30-evb.conf
 -rw-rw-r-- 1 seokgh seokgh   74  3월 22 20:08 rockchip-rk3288-evb-act8846.conf
 -rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3288-evb.conf
@@ -172,14 +176,63 @@ lrwxrwxrwx 1 seokgh seokgh   28  3월 22 22:04 local.conf -> rockchip-rk3588-roc
 -rw-rw-r-- 1 seokgh seokgh    0  3월 22 20:08 sanity.conf
 -rw-rw-r-- 1 seokgh seokgh   33  3월 22 20:10 templateconf.cfg
 
-
-
+//
+//build the image
+//
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-image-weston
 
 
-
-
-
+----------------------------------------------------------------------------------
+컴파일한 결과물:
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ ls -lh tmp/deploy/images/rockchip-rk3588-rock-5b/
+total 3.7G
+lrwxrwxrwx 2 seokgh seokgh    59  3월 26 16:17 boot.img -> boot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh   17M  3월 26 16:17 boot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    59  3월 26 16:17 boot.img-rockchip-rk3588-rock-5b.bin -> boot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh  6.5K  3월 26 21:36 core-image-weston.env
+-rw-r--r-- 2 seokgh seokgh   704  3월 26 21:36 core-image-weston-generic-gptdisk.wks
+-rw-r--r-- 2 seokgh seokgh 1009M  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.ext4
+-rw-r--r-- 2 seokgh seokgh   33K  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.manifest
+-rw-r--r-- 2 seokgh seokgh  1.7M  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.spdx.tar.zst
+-rw-r--r-- 2 seokgh seokgh  302M  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.tar.gz
+-rw-r--r-- 2 seokgh seokgh  335K  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.testdata.json
+-rw-r--r-- 2 seokgh seokgh  1.4G  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.wic
+lrwxrwxrwx 2 seokgh seokgh    68  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.ext4 -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.ext4
+lrwxrwxrwx 2 seokgh seokgh    72  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.manifest -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.manifest
+-rw-r--r-- 2 seokgh seokgh   198  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.package-file
+-rw-r--r-- 2 seokgh seokgh   272  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh    76  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.spdx.tar.zst -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.spdx.tar.zst
+lrwxrwxrwx 2 seokgh seokgh    70  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.tar.gz -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.tar.gz
+lrwxrwxrwx 2 seokgh seokgh    77  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.testdata.json -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.testdata.json
+-rw-r--r-- 2 seokgh seokgh  1.4G  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.ufs.wic
+-rw-r--r-- 2 seokgh seokgh  1.1G  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh    67  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.wic
+lrwxrwxrwx 2 seokgh seokgh    19  3월 26 16:18 idblock.img -> idblock.img-2017.09
+-rwxr-xr-x 2 seokgh seokgh  310K  3월 26 16:18 idblock.img-2017.09
+lrwxrwxrwx 2 seokgh seokgh    56  3월 26 16:17 Image -> Image--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh   39M  3월 26 16:17 Image--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    56  3월 26 16:17 Image-rockchip-rk3588-rock-5b.bin -> Image--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    18  3월 26 16:18 loader.bin -> loader.bin-2017.09
+-rwxr-xr-x 2 seokgh seokgh  477K  3월 26 16:18 loader.bin-2017.09
+-rw-r--r-- 2 seokgh seokgh  5.3M  3월 26 16:17 modules--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.tgz
+lrwxrwxrwx 2 seokgh seokgh    58  3월 26 16:17 modules-rockchip-rk3588-rock-5b.tgz -> modules--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.tgz
+lrwxrwxrwx 2 seokgh seokgh    61  3월 26 21:37 package-file -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.package-file
+lrwxrwxrwx 2 seokgh seokgh    58  3월 26 21:37 parameter -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh    18  3월 26 16:17 rk3588-rock-5b--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.dtb -> rk3588-rock-5b.dtb
+-rw-r--r-- 2 seokgh seokgh  266K  3월 26 16:17 rk3588-rock-5b.dtb
+lrwxrwxrwx 2 seokgh seokgh    18  3월 26 16:17 rk3588-rock-5b-rockchip-rk3588-rock-5b.dtb -> rk3588-rock-5b.dtb
+lrwxrwxrwx 2 seokgh seokgh    53  3월 26 21:37 rootfs.img -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.ext4
+lrwxrwxrwx 2 seokgh seokgh    44  3월 26 16:18 uboot.img -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh    62  3월 26 16:18 u-boot-rockchip-initial-env -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+lrwxrwxrwx 2 seokgh seokgh    62  3월 26 16:18 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh  3.8K  3월 26 16:18 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh  4.0M  3월 26 16:18 uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh    44  3월 26 16:18 uboot-rockchip-rk3588-rock-5b.bin -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh    59  3월 26 21:37 update.img -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh   17M  3월 26 16:17 zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img-rockchip-rk3588-rock-5b.bin -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
 
 
 
