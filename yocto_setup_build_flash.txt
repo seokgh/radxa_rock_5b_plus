@@ -243,12 +243,28 @@ lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img -> zboot.img--6.1-r0-r
 lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img-rockchip-rk3588-rock-5b.bin -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
 
 ----------------------------------------------------------------------------------
-Flash to board:
+Flash to SD Card:
 ----------------------------------------------------------------------------------
 If you want to boot the image on microSD card the follow below steps.
 
-cd tmp-glibc/deploy/images/\<MACHINE\>
-sudo dd if=./core-image-full-cmdline-rock-5b.rootfs.wic of=/dev/sdX
+$ cd tmp-glibc/deploy/images/\<MACHINE\>
+$ sudo time dd if=./core-image-full-cmdline-rock-5b.rootfs.wic of=/dev/sdX                //
+$ sudo time dd if=./core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic of=/dev/sda      //
+
+//
+//
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ ll | grep core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic
+lrwxrwxrwx 2 seokgh seokgh         67  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.wic
+
+
+
+
+
+
+
+
+
 
 
 ----------------------------------------------------------------------------------
