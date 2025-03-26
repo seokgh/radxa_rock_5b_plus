@@ -120,7 +120,7 @@ BBLAYERS ?= " \
 "
 
 ----------------------------------------------------------------------------------
-step4. build/conf/local.conf 파일은 아래내용을 사용
+step4. build/conf/local.conf 파일은 아래내용을 사용 (core-image-weston 이미지 빌드용으로는 이 설정으로 된다)
 ----------------------------------------------------------------------------------
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ cat local.conf 
 include include/common.conf
