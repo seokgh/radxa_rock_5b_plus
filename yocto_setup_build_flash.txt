@@ -262,10 +262,17 @@ lrwxrwxrwx 2 seokgh seokgh         67  3월 26 21:37 core-image-weston-rockchip-
 ----------------------------------------------------------------------------------
 Flash to eMMC:
 ----------------------------------------------------------------------------------
+//
+//flash loader
+//
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool db loader.bin
 Downloading bootloader succeeded.
 
-
+//
+//flash .wic file
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool wl 0 core-image-weston-rockchip-rk3588-rock-5b.rootfs.ufs.wic
+Write LBA from file (100%)
 
 
 
