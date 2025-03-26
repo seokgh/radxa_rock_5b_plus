@@ -29,7 +29,8 @@ In order to build an image, you need to download some layers.
 ~/yocto $ git clone git://git.yoctoproject.org/meta-virtualization -b scarthgap
 
 
-위 내용대로 했는데 잘 안되서, 추가로 아래처럼 환경을 만드니 컴파일이 정상적으로 시작됬다!!!
+NOTE:
+    위 내용대로 했는데 잘 안되서, 추가로 아래처럼 환경을 만드니 컴파일이 정상적으로 시작됬다!!!
 
 ----------------------------------------------------------------------------------
 step1. 먼저 각 repo 리스트
@@ -136,6 +137,9 @@ step5. 위 처럼 준비해놓으면 컴파일이 된다
 ----------------------------------------------------------------------------------
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ source ./oe-init-build-env
 
+//
+//All supported machines can be found in meta-rockchip/conf/machine.
+//
 
 ----------------------------------------------------------------------------------
 step5.1. 이 데렉토리는 어디서 생긴 브랜치?
@@ -185,6 +189,10 @@ seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-i
 ----------------------------------------------------------------------------------
 컴파일한 결과물:
 ----------------------------------------------------------------------------------
+At the end of a successful build, you should have an .wic image in
+          /path/to/yocto/build/tmp-glibc/deploy/<MACHINE>/
+
+
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ ls -lh tmp/deploy/images/rockchip-rk3588-rock-5b/
 total 3.7G
 lrwxrwxrwx 2 seokgh seokgh    59  3월 26 16:17 boot.img -> boot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
@@ -234,8 +242,13 @@ lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img -> zboot.img--6.1-r0-r
 -rw-r--r-- 2 seokgh seokgh   17M  3월 26 16:17 zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
 lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img-rockchip-rk3588-rock-5b.bin -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
 
+----------------------------------------------------------------------------------
+Flash to board:
+----------------------------------------------------------------------------------
+If you want to boot the image on microSD card the follow below steps.
 
-
+cd tmp-glibc/deploy/images/\<MACHINE\>
+sudo dd if=./core-image-full-cmdline-rock-5b.rootfs.wic of=/dev/sdX
 
 
 ----------------------------------------------------------------------------------
