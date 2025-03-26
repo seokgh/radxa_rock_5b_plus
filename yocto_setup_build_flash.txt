@@ -265,7 +265,8 @@ lrwxrwxrwx 2 seokgh seokgh         67  3월 26 21:37 core-image-weston-rockchip-
 ----------------------------------------------------------------------------------
 Flash to eMMC:         //부팅이 됬다
 ----------------------------------------------------------------------------------
-SD Card 를 먼저 빼고!
+SD Card 를 먼저 빼고! 
+UART 설정은 1500000 bps
 
 //
 //flash loader
@@ -278,6 +279,32 @@ Downloading bootloader succeeded.
 //
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool wl 0 core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic
 Write LBA from file (100%)
+
+//
+// login: root 로 로그인이 된다.
+//
+...
+...
+[   16.618143] platform mtd_vendor_storage: deferred probe pending
+[   63.587401] dwhdmi-rockchip fde80000.hdmi: use tmds mode
+[   63.603074] dwhdmi-rockchip fde80000.hdmi: use tmds mode
+[   63.610058] dwhdmi-rockchip fde80000.hdmi: use tmds mode
+
+Poky (Yocto Project Reference Distro) 5.0.8 rockchip-rk3588-rock-5b /dev/ttyFIQ0
+
+rockchip-rk3588-rock-5b login: rock
+Password: 
+Login incorrect
+
+rockchip-rk3588-rock-5b login: root
+
+WARNING: Poky is a reference Yocto Project distribution that should be used for
+testing and development purposes only. It is recommended that you create your
+own distribution for production use.
+
+root@rockchip-rk3588-rock-5b:~# 
+root@rockchip-rk3588-rock-5b:~# 
+
 
 
 
