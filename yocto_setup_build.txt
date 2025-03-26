@@ -216,9 +216,23 @@ Yocto의 빌드 캐시가 꼬였을 가능성이 있으므로, 해당 패키지�
 
 bitbake -c cleansstate glibc
 bitbake -c cleansstate elfutils
+
 bitbake core-image-weston
 
 -c cleansstate는 소스 코드까지 제거하고 완전히 처음부터 다시 빌드하게 만듭니다.
 
+----------------------------------------------------------------------------------
+tmp 및 sstate-cache 정리 후 재빌드
+----------------------------------------------------------------------------------
+Yocto 빌드 중간에 실패한 경우, 임시 파일을 정리하고 다시 시도하는 것이 좋습니다.
 
+bitbake -c cleansstate glibc
+bitbake -c cleansstate elfutils
+bitbake -c clean glibc
+bitbake -c clean elfutils
+rm -rf tmp sstate-cache
+
+bitbake core-image-weston
+
+위 명령어로 캐시를 정리한 후 다시 빌드를 시도하세요.
 
