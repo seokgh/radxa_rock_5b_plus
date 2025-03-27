@@ -1,8 +1,10 @@
 
 https://docs.radxa.com/en/rock5/rock5b/other-os/yocto
-  ---> Community version
-        ---> Click [Community Yocto]
+  ---> Community version                                                   //잘 안 되서, Vendor version 버전으로 갔다.
                 ---> https://github.com/radxa/meta-rockchip/tree/scarthgap
+  ---> Vendor version
+                ---> https://github.com/radxa/yocto-manifests/tree/master
+
 
 
 ----------------------------------------------------------------------------------
@@ -15,22 +17,35 @@ $ sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential \
     debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa \
     libsdl1.2-dev pylint xterm python3-subunit mesa-common-dev zstd liblz4-tool
 
-----------------------------------------------------------------------------------
-Configure Yocto/OE
-----------------------------------------------------------------------------------
-In order to build an image, you need to download some layers.
 
-~ $ mkdir yocto; cd yocto
-~/yocto $ git clone git://git.openembedded.org/bitbake -b master
-~/yocto $ git clone git://git.openembedded.org/openembedded-core -b scarthgap
-~/yocto $ git clone git://git.yoctoproject.org/meta-arm -b scarthgap
-~/yocto $ git clone git://git.openembedded.org/meta-openembedded -b scarthgap
-~/yocto $ git clone git@github.com:radxa/meta-rockchip.git -b scarthgap     // NG, Use this --->  $ git clone git://git.yoctoproject.org/meta-rockchip -b scarthgap
-~/yocto $ git clone git://git.yoctoproject.org/meta-virtualization -b scarthgap
+
+
+----------------------------------------------------------------------------------
+Example: Build ROCK 5B Machine
+----------------------------------------------------------------------------------
+Get source code
+---------------------------------------
+$ mkdir ~/yocto-rockchip-sdk && cd ~/yocto-rockchip-sdk
+$ repo init -u https://github.com/radxa/yocto-manifests.git -b master
+$ repo sync
+
+
+---------------------------------------
+local.conf (rockchip-rk3588-rock-5b.conf)
+---------------------------------------
+Link the local.conf to the target board configuration file.
+Here we aim to build ROCK 5B machine, so the local.conf is linked to rockchip-rk3588-rock-5b.conf.
+You should change the link when you build the other machine.
+
+$ cd ~/yocto-rockchip-sdk/build/conf
+$ ln -sf rockchip-rk3588-rock-5b.conf local.conf
+$ ls -al local.conf
+lrwxrwxrwx 1 radxa radxa 28 Jul 24 18:45 local.conf -> rockchip-rk3588-rock-5b.conf
 
 
 NOTE:
-    위 내용대로 했는데 잘 안되서, 추가로 아래처럼 환경을 만드니 컴파일이 정상적으로 시작됬다!!!
+    추가로 아래처럼 환경을 만드니 컴파일이 정상적으로 됬다.
+
 
 ----------------------------------------------------------------------------------
 step1. 먼저 각 repo 리스트
@@ -93,6 +108,45 @@ step2. 각 repo 를 가져온 곳
     yocto	git://git.yoctoproject.org/poky (push)
 
 
+----------------------------------------------------------------------------------
+이 데렉토리는 어디서 생긴 것? -> repo init 으로 자동으로 다운해 온 것이다.
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ ls -lh
+total 124K
+-rw-rw-r-- 1 seokgh seokgh  612  3월 25 23:44 bblayers.conf                                  //
+-rw-rw-r-- 1 seokgh seokgh  516  3월 22 20:10 conf-notes.txt
+-rw-rw-r-- 1 seokgh seokgh   77  3월 22 20:10 conf-summary.txt
+drwxrwxr-x 3 seokgh seokgh 4.0K  3월 25 23:30 include
+lrwxrwxrwx 1 seokgh seokgh   28  3월 22 22:04 local.conf -> rockchip-rk3588-rock-5b.conf      //
+-rw-rw-r-- 1 seokgh seokgh   85  3월 22 20:08 rockchip-px30-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   74  3월 22 20:08 rockchip-rk3288-evb-act8846.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3288-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   71  3월 22 20:08 rockchip-rk3288w-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3326-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   90  3월 22 20:08 rockchip-rk3399pro-evb.conf
+-rw-rw-r-- 1 seokgh seokgh  102  3월 22 20:08 rockchip-rk3399-sapphire-excavator.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3528-radxa-e20c.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2a.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2f.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3562-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3566-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3568-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 25 23:30 rockchip-rk3576-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3588-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   91  3월 22 22:04 rockchip-rk3588-rock-5b.conf
+-rw-rw-r-- 1 seokgh seokgh   96  3월 25 23:30 rockchip-rk3588-rock-5b-plus.conf
+-rw-rw-r-- 1 seokgh seokgh   94  3월 25 23:30 rockchip-rk3588-rock-5-itx.conf
+-rw-rw-r-- 1 seokgh seokgh   91  3월 25 23:30 rockchip-rk3588-rock-5t.conf
+-rw-rw-r-- 1 seokgh seokgh   97  3월 22 20:08 rockchip-rk3588s-radxa-cm5-io.conf
+-rw-rw-r-- 1 seokgh seokgh  105  3월 25 23:30 rockchip-rk3588s-radxa-cm5-rpi-cm4-io.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e52c.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e54c.conf
+-rw-rw-r-- 1 seokgh seokgh   97  3월 25 23:30 rockchip-rk3588s-radxa-nx5-io.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3588s-rock-5a.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 22 20:08 rockchip-rk3588s-rock-5c.conf
+-rw-rw-r-- 1 seokgh seokgh    0  3월 22 20:08 sanity.conf
+-rw-rw-r-- 1 seokgh seokgh   33  3월 22 20:10 templateconf.cfg
+
 
 ----------------------------------------------------------------------------------
 step3. build/conf/bblayers.conf 파일은 아래내용을 사용
@@ -134,60 +188,19 @@ PACKAGECONFIG:remove:elfutils = "debuginfod"
 
 ----------------------------------------------------------------------------------
 step5. 위 처럼 준비해놓으면 컴파일이 된다
+NOTE:  All supported machines can be found in meta-rockchip/conf/machine )
 ----------------------------------------------------------------------------------
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ source ./oe-init-build-env
 
-//
-//All supported machines can be found in meta-rockchip/conf/machine.
-//
 
 ----------------------------------------------------------------------------------
-step5.1. 이 데렉토리는 어디서 생긴 브랜치?
+step6. build the image
 ----------------------------------------------------------------------------------
-seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ ls -lh
-total 124K
--rw-rw-r-- 1 seokgh seokgh  612  3월 25 23:44 bblayers.conf                                  //
--rw-rw-r-- 1 seokgh seokgh  516  3월 22 20:10 conf-notes.txt
--rw-rw-r-- 1 seokgh seokgh   77  3월 22 20:10 conf-summary.txt
-drwxrwxr-x 3 seokgh seokgh 4.0K  3월 25 23:30 include
-lrwxrwxrwx 1 seokgh seokgh   28  3월 22 22:04 local.conf -> rockchip-rk3588-rock-5b.conf      //
--rw-rw-r-- 1 seokgh seokgh   85  3월 22 20:08 rockchip-px30-evb.conf
--rw-rw-r-- 1 seokgh seokgh   74  3월 22 20:08 rockchip-rk3288-evb-act8846.conf
--rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3288-evb.conf
--rw-rw-r-- 1 seokgh seokgh   71  3월 22 20:08 rockchip-rk3288w-evb.conf
--rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3326-evb.conf
--rw-rw-r-- 1 seokgh seokgh   90  3월 22 20:08 rockchip-rk3399pro-evb.conf
--rw-rw-r-- 1 seokgh seokgh  102  3월 22 20:08 rockchip-rk3399-sapphire-excavator.conf
--rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3528-radxa-e20c.conf
--rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2a.conf
--rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2f.conf
--rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3562-evb.conf
--rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3566-evb.conf
--rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3568-evb.conf
--rw-rw-r-- 1 seokgh seokgh   87  3월 25 23:30 rockchip-rk3576-evb.conf
--rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3588-evb.conf
--rw-rw-r-- 1 seokgh seokgh   91  3월 22 22:04 rockchip-rk3588-rock-5b.conf
--rw-rw-r-- 1 seokgh seokgh   96  3월 25 23:30 rockchip-rk3588-rock-5b-plus.conf
--rw-rw-r-- 1 seokgh seokgh   94  3월 25 23:30 rockchip-rk3588-rock-5-itx.conf
--rw-rw-r-- 1 seokgh seokgh   91  3월 25 23:30 rockchip-rk3588-rock-5t.conf
--rw-rw-r-- 1 seokgh seokgh   97  3월 22 20:08 rockchip-rk3588s-radxa-cm5-io.conf
--rw-rw-r-- 1 seokgh seokgh  105  3월 25 23:30 rockchip-rk3588s-radxa-cm5-rpi-cm4-io.conf
--rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e52c.conf
--rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e54c.conf
--rw-rw-r-- 1 seokgh seokgh   97  3월 25 23:30 rockchip-rk3588s-radxa-nx5-io.conf
--rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3588s-rock-5a.conf
--rw-rw-r-- 1 seokgh seokgh   92  3월 22 20:08 rockchip-rk3588s-rock-5c.conf
--rw-rw-r-- 1 seokgh seokgh    0  3월 22 20:08 sanity.conf
--rw-rw-r-- 1 seokgh seokgh   33  3월 22 20:10 templateconf.cfg
-
-//
-//build the image
-//
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-image-weston
 
 
 ----------------------------------------------------------------------------------
-컴파일한 결과물:
+step7. 컴파일한 결과물:
 ----------------------------------------------------------------------------------
 At the end of a successful build, you should have an .wic image in
           /path/to/yocto/build/tmp-glibc/deploy/<MACHINE>/
@@ -243,10 +256,8 @@ lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img -> zboot.img--6.1-r0-r
 lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img-rockchip-rk3588-rock-5b.bin -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
 
 
-
-
 ----------------------------------------------------------------------------------
-Flash to SD Card:
+step8. Flash to SD Card:
 ----------------------------------------------------------------------------------
 If you want to boot the image on microSD card the follow below steps.
 
@@ -263,7 +274,7 @@ lrwxrwxrwx 2 seokgh seokgh         67  3월 26 21:37 core-image-weston-rockchip-
 
 
 ----------------------------------------------------------------------------------
-Flash to eMMC:         //부팅이 됬다
+step8.1 Flash to eMMC:         //부팅이 됬다
 ----------------------------------------------------------------------------------
 SD Card 를 먼저 빼고! 
 UART 설정은 1500000 bps
@@ -304,6 +315,9 @@ own distribution for production use.
 
 root@rockchip-rk3588-rock-5b:~# 
 root@rockchip-rk3588-rock-5b:~# 
+
+
+
 
 
 
