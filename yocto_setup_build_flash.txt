@@ -280,7 +280,7 @@ SD Card 를 먼저 빼고!
 UART 설정은 1500000 bps
 
 //
-//flash loader
+//flash loader  (매번 먼저 이 파일을 굽어야 .wic 파일도 굽을 수가 있었다.)
 //
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool db loader.bin
 Downloading bootloader succeeded.
