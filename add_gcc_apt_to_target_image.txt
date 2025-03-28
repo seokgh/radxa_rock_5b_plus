@@ -1,0 +1,54 @@
+--------------------------------------------------------------------------------
+A. Add native gcc to the target image
+--------------------------------------------------------------------------------
+Add native gcc to the Poky linux target image
+
+The Yocto Project gives you the possibility of use the power of
+your Host system and cross-compile everything instead of building source code directly on the target system.
+
+However if you really need to build on the Target system you may need to have make and gcc installed in the final image.
+
+The easiest way to do that is adding the following line
+to the [ local.conf ] or your image [ recipe ] file.
+
+	IMAGE_INSTALL_append = " packagegroup-core-buildessential"
+
+
+
+--------------------------------------------------------------------------------
+Add gcc, g++ to custom minimal image (참고)
+--------------------------------------------------------------------------------
+The toolchain runs on target board, which is the same exact version as the cross tools in this SDK,
+is only included in fsl-image-full rootfs,
+if you want to add toolchain into other rootfs images, do the following:
+
+1. Edit fsl-image-minimal.bb/fsl-image-core.bb to add packagegroup-core-buildessential in the IMAGE_INSTALL variable.
+
+2. $ bitbake <rootfs-target>.
+
+Please try the following:
+
+Please add "IMAGE_INSTALL +=packagegroup-core-buildessential" in sources/meta-freescale/recipes-fsl/images/fsl-image-minimal.bb,
+and rebuild minimal rootfs filesytem with "$bitbake fsl-image-minimal"
+
+
+Have a great day,
+Yiping
+
+-----------------------------------------------------------------------------------------------------------------------
+Note: If this post answers your question, please click the Correct Answer button. Thank you!
+-----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+--------------------------------------------------------------------------------
+How to add apt package manager in yocto project?
+--------------------------------------------------------------------------------
+First,
+	you need to configure YP to use Debian package management to create the package feeds.
+	For that set PACKAGE_CLASSES = "package_deb" in build/conf/local.conf.
+
+Second,
+	you need add the package manager to your images.
+	For that set package-management to the IMAGE_FEATURES variable in build/conf/local.conf.

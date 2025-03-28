@@ -1,0 +1,25 @@
+Build System/Yocto Project
+--------------------------------------------------------------------------------
+PACKAGECONFIG 에 대해서
+
+Description:
+	Yocto recipe 상에서 해당 recipe에 대한 feature에 대하여
+	enable하거나 disable 또는 dependency를 설정할 수 있는 변수로서 아래와 같은 형태로 사용한다.
+
+
+기본형태:
+	PACKAGECONFIG ??= "f1"
+	PACKAGECONFIG[f1] = "--with-f1,--without-f1,build-deps-f1,rt-deps-f1"
+
+
+1. PACKAGECONFIG에 명시된 feature에 대하여 해당 feature에 대한 configure 를 설정:
+
+    ex) f1 이 PACKAGECONFIG 에 명시되어 있으므로, PACKAGECONFIG[f1]이 활성화 되어 정의된 configure 적용
+
+
+2. 각 feature에 대한 configure 설정, 4 가지 config 설정 가능(comma-separated)
+
+    1. [FEATURE]가 enable  되어 있을 경우 추가할 configure (EXTRA_OECONF or PACKAGECONFIG_CONFARGS)
+    2. [FEATURE]가 disable 되어 있을 경우 추가할 configure (EXTRA_OECONF or PACKAGECONFIG_CONFARGS)
+    3. [FEATURE]가 enable  되어 있을 경우 추가할 build dependency (DPENDS)
+    4. [FEATURE]가 enable  되어 있을 경우 추가할 runtime dependency (RDPENDS)
