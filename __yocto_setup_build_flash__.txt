@@ -356,6 +356,25 @@ lrwxrwxrwx 2 seokgh seokgh         64  3월 31 23:59 parameter -> core-image-ful
 lrwxrwxrwx 2 seokgh seokgh         59  4월  1 00:01 rootfs.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4
 lrwxrwxrwx 2 seokgh seokgh         65  3월 31 23:59 update.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
 
+
+---------------------------------------------------------
+일단 U-Boot 관련 레시피가 빠졌을 가능성이 있는지 체그하니, 안 빠져있었다:
+---------------------------------------------------------
+Yocto에서 Rockchip 보드의 부트로더는 일반적으로 u-boot 레시피를 통해 빌드된다. conf/local.conf 또는 bblayers.conf에서 관련 레시피가 활성화되어 있는지 확인.
+
+다음 명령으로 u-boot가 포함되어 있는지 확인해보면 된다:
+
+    $ bitbake -s | grep u-boot
+
+만약 u-boot 관련 항목이 나오지 않는다면, meta-rockchip 또는 u-boot 레시피가 빠진 것일 수 있다.
+나의 경우, 다음과 같이 출력되어, 정상이었다:
+
+$ bitbake -s | grep u-boot
+nativesdk-u-boot-tools                           1:2024.01-r0                                                    
+u-boot-rockchip                                  1:2017.09-r0                                                    
+u-boot-tools                                     1:2024.01-r0                                                    
+u-boot-tools-native                              1:2024.01-r0    
+
 ---------------------------------------------------------
 그래서 강제로 U-boot를 빌드하니까, loader.bin 이 생성 됬다:
 ---------------------------------------------------------
@@ -399,6 +418,15 @@ lrwxrwxrwx 2 seokgh seokgh   62  4월  1 00:09 u-boot-rockchip-initial-env-rockc
 -rw-r--r-- 2 seokgh seokgh 4.0M  4월  1 00:09 uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
 lrwxrwxrwx 2 seokgh seokgh   44  4월  1 00:09 uboot-rockchip-rk3588-rock-5b.bin -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
 lrwxrwxrwx 2 seokgh seokgh   65  3월 31 23:59 update.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+
+
+
+
+
+
+
+
+
 
 
 
