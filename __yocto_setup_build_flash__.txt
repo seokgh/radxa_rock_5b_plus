@@ -422,6 +422,18 @@ lrwxrwxrwx 2 seokgh seokgh   65  3월 31 23:59 update.img -> core-image-full-cmd
 
 
 
+//
+//flash loader  (매번 먼저 이 파일을 굽어야 .wic 파일도 굽을 수가 있었다.)
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool db loader.bin
+Downloading bootloader succeeded.
+
+//
+//flash .wic file (부팅 OK)
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool wl 0 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.wic
+Write LBA from file (100%)
+
 
 
 
