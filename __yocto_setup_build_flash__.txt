@@ -194,7 +194,7 @@ seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ source ./oe-init-bui
 
 
 ----------------------------------------------------------------------------------
-step6. build the image
+step6. build the image   (core-image-weston 를 예시로. core-image-full-cmdline 예시는 밑에 참조)
 ----------------------------------------------------------------------------------
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-image-weston
 
@@ -319,6 +319,86 @@ root@rockchip-rk3588-rock-5b:~#
 
 
 
+
+
+
+----------------------------------------------------------------------------------
+step6. build the image   (core-image-full-cmdline 예시)
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-image-full-cmdline
+
+는 빌드하면, U-boot 가 빌드 안 되는 것 같았다 (loader.bin 이 생성 안 됬다):
+
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ ll
+total 6156236
+drwxr-xr-x 2 seokgh seokgh       4096  4월  1 00:02 ./
+drwxr-xr-x 3 seokgh seokgh       4096  3월 26 16:17 ../
+-rw-r--r-- 2 seokgh seokgh       6727  3월 31 23:59 core-image-full-cmdline.env
+-rw-r--r-- 2 seokgh seokgh        704  3월 31 23:59 core-image-full-cmdline-generic-gptdisk.wks
+-rw-r--r-- 2 seokgh seokgh 1748664320  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+-rw-r--r-- 2 seokgh seokgh      54851  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh    3439145  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+-rw-r--r-- 2 seokgh seokgh  463580089  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+-rw-r--r-- 2 seokgh seokgh     347730  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2298446848  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh         74  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4 -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+lrwxrwxrwx 2 seokgh seokgh         78  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.manifest -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh        204  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+-rw-r--r-- 2 seokgh seokgh        278  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh         82  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.spdx.tar.zst -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+lrwxrwxrwx 2 seokgh seokgh         76  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.tar.gz -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+lrwxrwxrwx 2 seokgh seokgh         83  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.testdata.json -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2298446848  4월  1 00:02 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ufs.wic
+-rw-r--r-- 2 seokgh seokgh 1771582026  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh         73  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh         67  3월 31 23:59 package-file -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+lrwxrwxrwx 2 seokgh seokgh         64  3월 31 23:59 parameter -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh         59  4월  1 00:01 rootfs.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4
+lrwxrwxrwx 2 seokgh seokgh         65  3월 31 23:59 update.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+
+---------------------------------------------------------
+그래서 강제로 U-boot를 빌드하니까, loader.bin 이 생성 됬다:
+---------------------------------------------------------
+u-boot-rockchip을 강제 빌드 (기존 빌드 캐시를 정리한 후 u-boot-rockchip을 다시 빌드):
+
+    $ bitbake -c cleanall u-boot-rockchip
+    $ bitbake u-boot-rockchip
+
+
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ ls -lh
+total 5.9G
+-rw-r--r-- 2 seokgh seokgh 6.6K  3월 31 23:59 core-image-full-cmdline.env
+-rw-r--r-- 2 seokgh seokgh  704  3월 31 23:59 core-image-full-cmdline-generic-gptdisk.wks
+-rw-r--r-- 2 seokgh seokgh 1.7G  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+-rw-r--r-- 2 seokgh seokgh  54K  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh 3.3M  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+-rw-r--r-- 2 seokgh seokgh 443M  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+-rw-r--r-- 2 seokgh seokgh 340K  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2.2G  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh   74  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4 -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+lrwxrwxrwx 2 seokgh seokgh   78  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.manifest -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh  204  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+-rw-r--r-- 2 seokgh seokgh  278  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh   82  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.spdx.tar.zst -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+lrwxrwxrwx 2 seokgh seokgh   76  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.tar.gz -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+lrwxrwxrwx 2 seokgh seokgh   83  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.testdata.json -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2.2G  4월  1 00:02 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ufs.wic
+-rw-r--r-- 2 seokgh seokgh 1.7G  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh   73  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh   19  4월  1 00:09 idblock.img -> idblock.img-2017.09
+-rwxr-xr-x 2 seokgh seokgh 310K  4월  1 00:09 idblock.img-2017.09
+lrwxrwxrwx 2 seokgh seokgh   18  4월  1 00:09 loader.bin -> loader.bin-2017.09
+-rwxr-xr-x 2 seokgh seokgh 477K  4월  1 00:09 loader.bin-2017.09
+lrwxrwxrwx 2 seokgh seokgh   67  3월 31 23:59 package-file -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+lrwxrwxrwx 2 seokgh seokgh   64  3월 31 23:59 parameter -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh   59  4월  1 00:01 rootfs.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4
+lrwxrwxrwx 2 seokgh seokgh   44  4월  1 00:09 uboot.img -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh   62  4월  1 00:09 u-boot-rockchip-initial-env -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+lrwxrwxrwx 2 seokgh seokgh   62  4월  1 00:09 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh 3.8K  4월  1 00:09 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh 4.0M  4월  1 00:09 uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh   44  4월  1 00:09 uboot-rockchip-rk3588-rock-5b.bin -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh   65  3월 31 23:59 update.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
 
 
 
