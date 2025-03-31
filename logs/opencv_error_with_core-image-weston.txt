@@ -1,5 +1,6 @@
+---------------------------------------------------------------------------------
 rockchip-5bp + core-image-weston 에서 에러:
-
+---------------------------------------------------------------------------------
 root@rockchip-rk3588-rock-5b:~/opencv_test/print_image# 
 root@rockchip-rk3588-rock-5b:~/opencv_test/print_image# ./main M2402802.JPG 
 OpenCV version : 4.9.0
@@ -9,3 +10,36 @@ terminate called after throwing an instance of 'cv::Exception'
 Aborted
 root@rockchip-rk3588-rock-5b:~/opencv_test/print_image# 
 root@rockchip-rk3588-rock-5b:~/opencv_test/print_image# 
+
+
+//
+아래 처럼 local.conf 파일에 
+  PACKAGECONFIG:append:pn-opencv = " gtk"
+를 추가하니 수정되었다.
+
+
+---------------------------------------------------------------------------------
+Error Fix:
+---------------------------------------------------------------------------------
+/build/conf/local.conf 파일에 
+
+include include/common.conf
+include include/demo.conf
+
+MACHINE = "rockchip-rk3588-rock-5b"
+
+DISTRO_FEATURES:append = " x11"
+PACKAGECONFIG:remove:elfutils = "debuginfod"
+
+
+# Add opencv to image
+CORE_IMAGE_EXTRA_INSTALL += " opencv opencv-samples"
+CORE_IMAGE_EXTRA_INSTALL += " libopencv-core-dev libopencv-highgui-dev libopencv-imgproc-dev libopencv-objdetect-dev libopencv-ml-dev"
+
+
+# Add gcc to image
+IMAGE_INSTALL:append = " packagegroup-core-buildessential"
+
+
+#
+PACKAGECONFIG:append:pn-opencv = " gtk"
