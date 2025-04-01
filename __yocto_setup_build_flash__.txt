@@ -539,6 +539,9 @@ If you want only the recipes for your image, do:
 ----------------------------------------------------------------------------------
 DISTRO_FEATURES 가 제대로 설정되었는지 확인
 ----------------------------------------------------------------------------------
+//
+//DISTRO_FEATURES=로 시작하는 줄만 검색
+//
 seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ bitbake -e | grep ^DISTRO_FEATURES=
 DISTRO_FEATURES="acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget usbhost wifi xattr nfs zeroconf pci 3g nfc  vfat seccomp opengl  multiarch wayland  wayland egl opengl  sysvinit pulseaudio gobject-introspection-data ldconfig"
 
