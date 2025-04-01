@@ -550,6 +550,50 @@ DISTRO_FEATURES="acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget u
 
 
 ----------------------------------------------------------------------------------
+grep ^DISTRO_FEATURES --include=*.conf -Rn
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ grep ^DISTRO_FEATURES --include=*.conf -Rn
+meta-poky/conf/distro/poky-tiny.conf:72:DISTRO_FEATURES_TINY = "pci"
+meta-poky/conf/distro/poky-tiny.conf:73:DISTRO_FEATURES_NET = "ipv4 ipv6"
+meta-poky/conf/distro/poky-tiny.conf:74:DISTRO_FEATURES_USB = "usbhost"
+meta-poky/conf/distro/poky-tiny.conf:78:DISTRO_FEATURES = "${DISTRO_FEATURES_TINY} \
+meta-poky/conf/distro/poky-tiny.conf:85:DISTRO_FEATURES:class-native = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+meta-poky/conf/distro/poky-tiny.conf:86:DISTRO_FEATURES:class-nativesdk = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+meta-poky/conf/distro/poky.conf:20:DISTRO_FEATURES ?= "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+build/conf/include/display.conf:4:DISTRO_FEATURES:append = " ${@d.getVar('DISPLAY_PLATFORM')}"
+build/conf/include/display.conf:5:DISTRO_FEATURES:remove = " ${@'x11' if d.getVar('DISPLAY_PLATFORM') == 'wayland' else 'wayland'}"
+build/conf/include/display.conf:10:DISTRO_FEATURES:append = " egl"
+build/conf/include/common.conf:286:DISTRO_FEATURES:remove = "ptest"
+build/conf/include/common.conf:288:DISTRO_FEATURES:remove = "vulkan"
+build/conf/include/glmark2.conf:2:DISTRO_FEATURES:append = " opengl"
+build/conf/local.conf:6:DISTRO_FEATURES:append = " x11"
+build/conf/rockchip-rk3588-rock-5b.conf:6:DISTRO_FEATURES:append = " x11"
+poky/meta/conf/bitbake.conf:903:DISTRO_FEATURES ?= ""
+poky/meta/conf/bitbake.conf:917:DISTRO_FEATURES_NATIVE ?= "acl x11 ipv6 xattr"
+poky/meta/conf/bitbake.conf:918:DISTRO_FEATURES_NATIVESDK ?= "x11"
+poky/meta/conf/bitbake.conf:922:DISTRO_FEATURES_FILTER_NATIVE ?= "api-documentation debuginfod opengl wayland"
+poky/meta/conf/bitbake.conf:923:DISTRO_FEATURES_FILTER_NATIVESDK ?= "api-documentation debuginfod opengl wayland"
+poky/meta/conf/bitbake.conf:925:DISTRO_FEATURES_BACKFILL = "pulseaudio sysvinit gobject-introspection-data ldconfig"
+poky/meta/conf/documentation.conf:145:DISTRO_FEATURES[doc] = "The features enabled for the distribution."
+poky/meta/conf/documentation.conf:146:DISTRO_FEATURES_BACKFILL[doc] = "Features to be added to DISTRO_FEATURES if not also present in DISTRO_FEATURES_BACKFILL_CONSIDERED. This variable is set in the meta/conf/bitbake.conf file and it is not intended to be user-configurable."
+poky/meta/conf/documentation.conf:147:DISTRO_FEATURES_BACKFILL_CONSIDERED[doc] = "Features from DISTRO_FEATURES_BACKFILL that should not be backfilled (i.e. added to DISTRO_FEATURES) during the build."
+poky/meta-poky/conf/distro/poky-tiny.conf:72:DISTRO_FEATURES_TINY = "pci"
+poky/meta-poky/conf/distro/poky-tiny.conf:73:DISTRO_FEATURES_NET = "ipv4 ipv6"
+poky/meta-poky/conf/distro/poky-tiny.conf:74:DISTRO_FEATURES_USB = "usbhost"
+poky/meta-poky/conf/distro/poky-tiny.conf:78:DISTRO_FEATURES = "${DISTRO_FEATURES_TINY} \
+poky/meta-poky/conf/distro/poky-tiny.conf:85:DISTRO_FEATURES:class-native = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+poky/meta-poky/conf/distro/poky-tiny.conf:86:DISTRO_FEATURES:class-nativesdk = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+poky/meta-poky/conf/distro/poky.conf:20:DISTRO_FEATURES ?= "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ 
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ 
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------
 몇몇 image recipes path: (즉, $ source ./oe-init-build-env 로 나오는 리스트)
 ----------------------------------------------------------------------------------
 $ ll  poky/meta/recipes-core/images/
