@@ -589,8 +589,16 @@ seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $
 
 
 
+----------------------------------------------------------------------------------
+몇개 .conf 파일 지간의 관계
+----------------------------------------------------------------------------------
+build/conf/include/demo.conf 에서  include display.conf 를 하고 있음.
 
+build/conf/include/display.conf:5:DISTRO_FEATURES:remove = " ${@'x11' if d.getVar('DISPLAY_PLATFORM') == 'wayland' else 'wayland'}"
 
+local.conf에서 또 이 두 파일을 포함하고 있음:
+include include/common.conf
+include include/demo.conf
 
 
 ----------------------------------------------------------------------------------
