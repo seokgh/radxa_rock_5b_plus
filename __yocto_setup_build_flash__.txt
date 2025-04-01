@@ -522,3 +522,15 @@ bitbake vim-native
 bitbake -c cleansstate vim-native
 bitbake vim-native
 
+
+
+
+-----------------------------
+You can easily list all the targets/recipes (.bb files) in your workspace doing:
+
+     $ bitbake-layers show-recipes
+
+If you want only the recipes for your image, do:
+
+    $ bitbake-layers show-recipes "<image_name>"
+
