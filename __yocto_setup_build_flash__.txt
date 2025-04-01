@@ -524,9 +524,9 @@ bitbake vim-native
 
 
 
-
------------------------------
+----------------------------------------------------------------------------------
 You can easily list all the targets/recipes (.bb files) in your workspace doing:
+----------------------------------------------------------------------------------
 
      $ bitbake-layers show-recipes
 
@@ -534,6 +534,15 @@ If you want only the recipes for your image, do:
 
     $ bitbake-layers show-recipes "<image_name>"
 
+
+
+----------------------------------------------------------------------------------
+DISTRO_FEATURES 가 제대로 설정되었는지 확인
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ bitbake -e | grep ^DISTRO_FEATURES=
+DISTRO_FEATURES="acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget usbhost wifi xattr nfs zeroconf pci 3g nfc  vfat seccomp opengl  multiarch wayland  wayland egl opengl  sysvinit pulseaudio gobject-introspection-data ldconfig"
+
+  출력 결과에 "x11"이 포함되어 있지 않다면, 설정이 적용되지 않은 것이다.
 
 
 
