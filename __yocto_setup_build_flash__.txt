@@ -534,3 +534,52 @@ If you want only the recipes for your image, do:
 
     $ bitbake-layers show-recipes "<image_name>"
 
+
+
+
+----------------------------------------------------------------------------------
+몇몇 image recipes path: (즉, $ source ./oe-init-build-env 로 나오는 리스트)
+----------------------------------------------------------------------------------
+$ ll  poky/meta/recipes-core/images/
+total 60
+drwxrwxr-x  3 seokgh seokgh 4096  4월  1 21:59 ./
+drwxrwxr-x 45 seokgh seokgh 4096  3월 25 23:27 ../
+drwxrwxr-x  2 seokgh seokgh 4096  3월 22 20:08 build-appliance-image/
+-rw-rw-r--  1 seokgh seokgh 6220  3월 25 23:27 build-appliance-image_15.0.0.bb
+-rw-rw-r--  1 seokgh seokgh  148  3월 22 20:08 core-image-base.bb
+-rw-rw-r--  1 seokgh seokgh  691  3월 22 20:08 core-image-initramfs-boot.bb
+-rw-rw-r--  1 seokgh seokgh  332  3월 22 20:08 core-image-minimal.bb
+-rw-rw-r--  1 seokgh seokgh  174  3월 22 20:08 core-image-minimal-dev.bb
+-rw-rw-r--  1 seokgh seokgh 1200  3월 25 23:27 core-image-minimal-initramfs.bb
+-rw-rw-r--  1 seokgh seokgh  270  3월 22 20:08 core-image-minimal-mtdutils.bb
+-rw-rw-r--  1 seokgh seokgh  775  3월 22 20:08 core-image-ptest-all.bb
+-rw-rw-r--  1 seokgh seokgh 1610  3월 25 23:27 core-image-ptest.bb
+-rw-rw-r--  1 seokgh seokgh  127  3월 22 20:08 core-image-ptest-fast.bb
+-rw-rw-r--  1 seokgh seokgh 1704  3월 25 23:27 core-image-tiny-initramfs.bb
+
+
+$ ll ./poky/meta/recipes-graphics/images/
+total 20
+drwxrwxr-x  2 seokgh seokgh 4096  4월  1 22:01 ./
+drwxrwxr-x 50 seokgh seokgh 4096  3월 25 23:27 ../
+-rw-rw-r--  1 seokgh seokgh  356  3월 22 20:08 core-image-weston.bb
+-rw-rw-r--  1 seokgh seokgh  572  3월 25 23:27 core-image-weston-sdk.bb
+-rw-rw-r--  1 seokgh seokgh  279  3월 22 20:08 core-image-x11.bb
+
+
+$ ll ./poky/meta/recipes-extended/images
+total 24
+drwxrwxr-x  2 seokgh seokgh 4096  3월 22 20:08 ./
+drwxrwxr-x 89 seokgh seokgh 4096  3월 25 23:27 ../
+-rw-rw-r--  1 seokgh seokgh  309  3월 22 20:08 core-image-full-cmdline.bb
+-rw-rw-r--  1 seokgh seokgh  954  3월 22 20:08 core-image-kernel-dev.bb
+-rw-rw-r--  1 seokgh seokgh  615  3월 22 20:08 core-image-testcontroller.bb
+-rw-rw-r--  1 seokgh seokgh  716  3월 22 20:08 core-image-testcontroller-initramfs.bb
+
+$ ll ./poky/meta/recipes-sato/images/
+total 20
+drwxrwxr-x  2 seokgh seokgh 4096  3월 28 00:34 ./
+drwxrwxr-x 22 seokgh seokgh 4096  3월 22 20:08 ../
+-rw-rw-r--  1 seokgh seokgh  773  3월 22 20:08 core-image-sato.bb
+-rw-rw-r--  1 seokgh seokgh  306  3월 22 20:08 core-image-sato-dev.bb
+-rw-rw-r--  1 seokgh seokgh  566  3월 25 23:27 core-image-sato-sdk.bb
