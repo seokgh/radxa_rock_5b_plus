@@ -1,0 +1,661 @@
+
+https://docs.radxa.com/en/rock5/rock5b/other-os/yocto
+  ---> Community version                                                   //잘 안 되서, Vendor version 버전으로 갔다.
+                ---> https://github.com/radxa/meta-rockchip/tree/scarthgap
+  ---> Vendor version
+                ---> https://github.com/radxa/yocto-manifests/tree/master
+
+
+
+----------------------------------------------------------------------------------
+Build Host
+----------------------------------------------------------------------------------
+To install the required packages on a Debian/Ubuntu run
+
+$ sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential \
+    chrpath socat cpio python3 python3-pip python3-pexpect xz-utils \
+    debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa \
+    libsdl1.2-dev pylint xterm python3-subunit mesa-common-dev zstd liblz4-tool
+
+
+
+
+----------------------------------------------------------------------------------
+Example: Build ROCK 5B Machine
+----------------------------------------------------------------------------------
+Get source code
+---------------------------------------
+$ mkdir ~/yocto-rockchip-sdk && cd ~/yocto-rockchip-sdk
+$ repo init -u https://github.com/radxa/yocto-manifests.git -b master
+$ repo sync
+
+
+---------------------------------------
+local.conf (rockchip-rk3588-rock-5b.conf)
+---------------------------------------
+Link the local.conf to the target board configuration file.
+Here we aim to build ROCK 5B machine, so the local.conf is linked to rockchip-rk3588-rock-5b.conf.
+You should change the link when you build the other machine.
+
+$ cd ~/yocto-rockchip-sdk/build/conf
+$ ln -sf rockchip-rk3588-rock-5b.conf local.conf
+$ ls -al local.conf
+lrwxrwxrwx 1 radxa radxa 28 Jul 24 18:45 local.conf -> rockchip-rk3588-rock-5b.conf
+
+
+NOTE:
+    추가로 아래처럼 환경을 만드니 컴파일이 정상적으로 됬다.
+
+
+----------------------------------------------------------------------------------
+step1. 먼저 각 repo 리스트
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ ls -lh
+total 164K
+lrwxrwxrwx  1 seokgh seokgh   12  3월 22 20:08 bitbake -> poky/bitbake
+drwxrwxr-x  6 seokgh seokgh 4.0K  3월 25 23:55 build
+-rwxrwxrwx  1 seokgh seokgh  649  3월 26 00:10 git_info_output.sh
+drwxrwxr-x  4 seokgh seokgh 4.0K  3월 26 00:05 meta-browser
+drwxrwxr-x 13 seokgh seokgh 4.0K  3월 25 23:28 meta-clang
+drwxrwxr-x  8 seokgh seokgh 4.0K  3월 25 23:55 meta-lts-mixins
+drwxrwxr-x 13 seokgh seokgh 4.0K  3월 25 23:26 meta-openembedded
+lrwxrwxrwx  1 seokgh seokgh   14  3월 22 20:08 meta-poky -> poky/meta-poky
+drwxrwxr-x 15 seokgh seokgh 4.0K  3월 25 23:39 meta-rockchip
+lrwxrwxrwx  1 seokgh seokgh   22  3월 22 20:08 oe-init-build-env -> poky/oe-init-build-env
+drwxrwxr-x  5 seokgh seokgh 128K  3월 26 00:09 packages
+drwxrwxr-x 11 seokgh seokgh 4.0K  3월 25 23:27 poky
+lrwxrwxrwx  1 seokgh seokgh   12  3월 22 20:08 scripts -> poky/scripts
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ 
+
+
+----------------------------------------------------------------------------------
+step2. 각 repo 를 가져온 곳
+----------------------------------------------------------------------------------
+📂 meta-browser/
+  🏷️ Branch: scarthgap
+  🔗 Remotes:
+    browser	https://github.com/OSSystems/meta-browser (fetch)
+    browser	https://github.com/OSSystems/meta-browser (push)
+
+📂 meta-clang/
+  🏷️ Branch: scarthgap
+  🔗 Remotes:
+    clang	https://github.com/kraj/meta-clang (fetch)
+    clang	https://github.com/kraj/meta-clang (push)
+
+📂 meta-lts-mixins/
+  🏷️ Branch: scarthgap/rust
+  🔗 Remotes:
+    origin	https://git.yoctoproject.org/meta-lts-mixins (fetch)
+    origin	https://git.yoctoproject.org/meta-lts-mixins (push)
+
+📂 meta-openembedded/
+  🏷️ Branch: scarthgap
+  🔗 Remotes:
+    oe	git://git.openembedded.org/meta-openembedded (fetch)
+    oe	git://git.openembedded.org/meta-openembedded (push)
+
+📂 meta-rockchip/
+  🏷️ Branch: scarthgap-vendor
+  🔗 Remotes:
+    origin	https://github.com/radxa/meta-rockchip.git (fetch)
+    origin	https://github.com/radxa/meta-rockchip.git (push)
+
+📂 poky/
+  🏷️ Branch: scarthgap
+  🔗 Remotes:
+    yocto	git://git.yoctoproject.org/poky (fetch)
+    yocto	git://git.yoctoproject.org/poky (push)
+
+
+----------------------------------------------------------------------------------
+이 데렉토리는 어디서 생긴 것? -> repo init 으로 자동으로 다운해 온 것이다.
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ ls -lh
+total 124K
+-rw-rw-r-- 1 seokgh seokgh  612  3월 25 23:44 bblayers.conf                                  //
+-rw-rw-r-- 1 seokgh seokgh  516  3월 22 20:10 conf-notes.txt
+-rw-rw-r-- 1 seokgh seokgh   77  3월 22 20:10 conf-summary.txt
+drwxrwxr-x 3 seokgh seokgh 4.0K  3월 25 23:30 include
+lrwxrwxrwx 1 seokgh seokgh   28  3월 22 22:04 local.conf -> rockchip-rk3588-rock-5b.conf      //
+-rw-rw-r-- 1 seokgh seokgh   85  3월 22 20:08 rockchip-px30-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   74  3월 22 20:08 rockchip-rk3288-evb-act8846.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3288-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   71  3월 22 20:08 rockchip-rk3288w-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3326-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   90  3월 22 20:08 rockchip-rk3399pro-evb.conf
+-rw-rw-r-- 1 seokgh seokgh  102  3월 22 20:08 rockchip-rk3399-sapphire-excavator.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3528-radxa-e20c.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2a.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3528-rock-2f.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3562-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3566-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3568-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 25 23:30 rockchip-rk3576-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   87  3월 22 20:08 rockchip-rk3588-evb.conf
+-rw-rw-r-- 1 seokgh seokgh   91  3월 22 22:04 rockchip-rk3588-rock-5b.conf
+-rw-rw-r-- 1 seokgh seokgh   96  3월 25 23:30 rockchip-rk3588-rock-5b-plus.conf
+-rw-rw-r-- 1 seokgh seokgh   94  3월 25 23:30 rockchip-rk3588-rock-5-itx.conf
+-rw-rw-r-- 1 seokgh seokgh   91  3월 25 23:30 rockchip-rk3588-rock-5t.conf
+-rw-rw-r-- 1 seokgh seokgh   97  3월 22 20:08 rockchip-rk3588s-radxa-cm5-io.conf
+-rw-rw-r-- 1 seokgh seokgh  105  3월 25 23:30 rockchip-rk3588s-radxa-cm5-rpi-cm4-io.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e52c.conf
+-rw-rw-r-- 1 seokgh seokgh   95  3월 25 23:30 rockchip-rk3588s-radxa-e54c.conf
+-rw-rw-r-- 1 seokgh seokgh   97  3월 25 23:30 rockchip-rk3588s-radxa-nx5-io.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 25 23:30 rockchip-rk3588s-rock-5a.conf
+-rw-rw-r-- 1 seokgh seokgh   92  3월 22 20:08 rockchip-rk3588s-rock-5c.conf
+-rw-rw-r-- 1 seokgh seokgh    0  3월 22 20:08 sanity.conf
+-rw-rw-r-- 1 seokgh seokgh   33  3월 22 20:10 templateconf.cfg
+
+
+----------------------------------------------------------------------------------
+step3. build/conf/bblayers.conf 파일은 아래내용을 사용
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ cat bblayers.conf 
+# POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+# changes incompatibly
+POKY_BBLAYERS_CONF_VERSION = "2"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+BBLAYERS ?= " \
+  ${TOPDIR}/../meta-openembedded/meta-oe \
+  ${TOPDIR}/../meta-openembedded/meta-python \
+  ${TOPDIR}/../meta-openembedded/meta-networking \
+  ${TOPDIR}/../meta-openembedded/meta-multimedia \
+  ${TOPDIR}/../meta-browser/meta-chromium \
+  ${TOPDIR}/../meta-lts-mixins \
+  ${TOPDIR}/../meta-clang \
+  ${TOPDIR}/../meta-rockchip \
+  ${TOPDIR}/../poky/meta \
+  ${TOPDIR}/../poky/meta-poky \
+  ${TOPDIR}/../poky/meta-yocto-bsp \
+"
+
+----------------------------------------------------------------------------------
+step4. build/conf/local.conf 파일은 아래내용을 사용 (core-image-weston 이미지 빌드용으로는 이 설정으로 된다)
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/conf (scarthgap) $ cat local.conf 
+include include/common.conf
+include include/demo.conf
+
+MACHINE = "rockchip-rk3588-rock-5b"
+
+DISTRO_FEATURES:append = " x11"
+PACKAGECONFIG:remove:elfutils = "debuginfod"
+
+
+----------------------------------------------------------------------------------
+step5. 위 처럼 준비해놓으면 컴파일이 된다
+NOTE:  All supported machines can be found in meta-rockchip/conf/machine )
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ source ./oe-init-build-env
+
+
+----------------------------------------------------------------------------------
+step6. build the image   (core-image-weston 를 예시로. core-image-full-cmdline 예시는 밑에 참조)
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-image-weston
+
+
+----------------------------------------------------------------------------------
+step7. 컴파일한 결과물:
+----------------------------------------------------------------------------------
+At the end of a successful build, you should have an .wic image in
+          /path/to/yocto/build/tmp-glibc/deploy/<MACHINE>/
+
+
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ ls -lh tmp/deploy/images/rockchip-rk3588-rock-5b/
+total 3.7G
+lrwxrwxrwx 2 seokgh seokgh    59  3월 26 16:17 boot.img -> boot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh   17M  3월 26 16:17 boot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    59  3월 26 16:17 boot.img-rockchip-rk3588-rock-5b.bin -> boot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh  6.5K  3월 26 21:36 core-image-weston.env
+-rw-r--r-- 2 seokgh seokgh   704  3월 26 21:36 core-image-weston-generic-gptdisk.wks
+-rw-r--r-- 2 seokgh seokgh 1009M  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.ext4
+-rw-r--r-- 2 seokgh seokgh   33K  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.manifest
+-rw-r--r-- 2 seokgh seokgh  1.7M  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.spdx.tar.zst
+-rw-r--r-- 2 seokgh seokgh  302M  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.tar.gz
+-rw-r--r-- 2 seokgh seokgh  335K  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.testdata.json
+-rw-r--r-- 2 seokgh seokgh  1.4G  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.wic
+lrwxrwxrwx 2 seokgh seokgh    68  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.ext4 -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.ext4
+lrwxrwxrwx 2 seokgh seokgh    72  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.manifest -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.manifest
+-rw-r--r-- 2 seokgh seokgh   198  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.package-file
+-rw-r--r-- 2 seokgh seokgh   272  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh    76  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.spdx.tar.zst -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.spdx.tar.zst
+lrwxrwxrwx 2 seokgh seokgh    70  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.tar.gz -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.tar.gz
+lrwxrwxrwx 2 seokgh seokgh    77  3월 26 21:36 core-image-weston-rockchip-rk3588-rock-5b.rootfs.testdata.json -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.testdata.json
+-rw-r--r-- 2 seokgh seokgh  1.4G  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.ufs.wic
+-rw-r--r-- 2 seokgh seokgh  1.1G  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh    67  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.wic
+lrwxrwxrwx 2 seokgh seokgh    19  3월 26 16:18 idblock.img -> idblock.img-2017.09
+-rwxr-xr-x 2 seokgh seokgh  310K  3월 26 16:18 idblock.img-2017.09
+lrwxrwxrwx 2 seokgh seokgh    56  3월 26 16:17 Image -> Image--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh   39M  3월 26 16:17 Image--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    56  3월 26 16:17 Image-rockchip-rk3588-rock-5b.bin -> Image--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    18  3월 26 16:18 loader.bin -> loader.bin-2017.09
+-rwxr-xr-x 2 seokgh seokgh  477K  3월 26 16:18 loader.bin-2017.09
+-rw-r--r-- 2 seokgh seokgh  5.3M  3월 26 16:17 modules--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.tgz
+lrwxrwxrwx 2 seokgh seokgh    58  3월 26 16:17 modules-rockchip-rk3588-rock-5b.tgz -> modules--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.tgz
+lrwxrwxrwx 2 seokgh seokgh    61  3월 26 21:37 package-file -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.package-file
+lrwxrwxrwx 2 seokgh seokgh    58  3월 26 21:37 parameter -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh    18  3월 26 16:17 rk3588-rock-5b--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.dtb -> rk3588-rock-5b.dtb
+-rw-r--r-- 2 seokgh seokgh  266K  3월 26 16:17 rk3588-rock-5b.dtb
+lrwxrwxrwx 2 seokgh seokgh    18  3월 26 16:17 rk3588-rock-5b-rockchip-rk3588-rock-5b.dtb -> rk3588-rock-5b.dtb
+lrwxrwxrwx 2 seokgh seokgh    53  3월 26 21:37 rootfs.img -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.ext4
+lrwxrwxrwx 2 seokgh seokgh    44  3월 26 16:18 uboot.img -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh    62  3월 26 16:18 u-boot-rockchip-initial-env -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+lrwxrwxrwx 2 seokgh seokgh    62  3월 26 16:18 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh  3.8K  3월 26 16:18 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh  4.0M  3월 26 16:18 uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh    44  3월 26 16:18 uboot-rockchip-rk3588-rock-5b.bin -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh    59  3월 26 21:37 update.img -> core-image-weston-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+-rw-r--r-- 2 seokgh seokgh   17M  3월 26 16:17 zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img-rockchip-rk3588-rock-5b.bin -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
+
+
+----------------------------------------------------------------------------------
+step8. Flash to SD Card:
+----------------------------------------------------------------------------------
+If you want to boot the image on microSD card the follow below steps.
+
+$ cd tmp-glibc/deploy/images/\<MACHINE\>
+$ sudo time dd if=./core-image-full-cmdline-rock-5b.rootfs.wic of=/dev/sdX                //
+$ sudo time dd if=./core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic of=/dev/sda      //
+
+//
+//
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ ll | grep core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic
+lrwxrwxrwx 2 seokgh seokgh         67  3월 26 21:37 core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-weston-rockchip-rk3588-rock-5b.rootfs-20250326071103.wic
+
+
+
+----------------------------------------------------------------------------------
+step8.1 Flash to eMMC:         //부팅이 됬다
+----------------------------------------------------------------------------------
+SD Card 를 먼저 빼고! 
+UART 설정은 1500000 bps
+
+//
+//flash loader  (매번 먼저 이 파일을 굽어야 .wic 파일도 굽을 수가 있었다.)
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool db loader.bin
+Downloading bootloader succeeded.
+
+//
+//flash .wic file (부팅 OK)
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool wl 0 core-image-weston-rockchip-rk3588-rock-5b.rootfs.wic
+Write LBA from file (100%)
+
+//
+// login: root 로 로그인이 된다.
+//
+...
+...
+[   16.618143] platform mtd_vendor_storage: deferred probe pending
+[   63.587401] dwhdmi-rockchip fde80000.hdmi: use tmds mode
+[   63.603074] dwhdmi-rockchip fde80000.hdmi: use tmds mode
+[   63.610058] dwhdmi-rockchip fde80000.hdmi: use tmds mode
+
+Poky (Yocto Project Reference Distro) 5.0.8 rockchip-rk3588-rock-5b /dev/ttyFIQ0
+
+rockchip-rk3588-rock-5b login: rock
+Password: 
+Login incorrect
+
+rockchip-rk3588-rock-5b login: root
+
+WARNING: Poky is a reference Yocto Project distribution that should be used for
+testing and development purposes only. It is recommended that you create your
+own distribution for production use.
+
+root@rockchip-rk3588-rock-5b:~# 
+root@rockchip-rk3588-rock-5b:~# 
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------
+step6. build the image   (core-image-full-cmdline 예시)
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build $ bitbake core-image-full-cmdline
+
+는 빌드하면, U-boot 가 빌드 안 되는 것 같았다 (loader.bin 이 생성 안 됬다):
+
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ ll
+total 6156236
+drwxr-xr-x 2 seokgh seokgh       4096  4월  1 00:02 ./
+drwxr-xr-x 3 seokgh seokgh       4096  3월 26 16:17 ../
+-rw-r--r-- 2 seokgh seokgh       6727  3월 31 23:59 core-image-full-cmdline.env
+-rw-r--r-- 2 seokgh seokgh        704  3월 31 23:59 core-image-full-cmdline-generic-gptdisk.wks
+-rw-r--r-- 2 seokgh seokgh 1748664320  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+-rw-r--r-- 2 seokgh seokgh      54851  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh    3439145  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+-rw-r--r-- 2 seokgh seokgh  463580089  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+-rw-r--r-- 2 seokgh seokgh     347730  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2298446848  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh         74  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4 -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+lrwxrwxrwx 2 seokgh seokgh         78  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.manifest -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh        204  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+-rw-r--r-- 2 seokgh seokgh        278  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh         82  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.spdx.tar.zst -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+lrwxrwxrwx 2 seokgh seokgh         76  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.tar.gz -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+lrwxrwxrwx 2 seokgh seokgh         83  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.testdata.json -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2298446848  4월  1 00:02 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ufs.wic
+-rw-r--r-- 2 seokgh seokgh 1771582026  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh         73  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh         67  3월 31 23:59 package-file -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+lrwxrwxrwx 2 seokgh seokgh         64  3월 31 23:59 parameter -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh         59  4월  1 00:01 rootfs.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4
+lrwxrwxrwx 2 seokgh seokgh         65  3월 31 23:59 update.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+
+
+---------------------------------------------------------
+일단 U-Boot 관련 레시피가 빠졌을 가능성이 있는지 체그하니, 안 빠져있었다:
+---------------------------------------------------------
+Yocto에서 Rockchip 보드의 부트로더는 일반적으로 u-boot 레시피를 통해 빌드된다. conf/local.conf 또는 bblayers.conf에서 관련 레시피가 활성화되어 있는지 확인.
+
+다음 명령으로 u-boot가 포함되어 있는지 확인해보면 된다:
+
+    $ bitbake -s | grep u-boot
+
+만약 u-boot 관련 항목이 나오지 않는다면, meta-rockchip 또는 u-boot 레시피가 빠진 것일 수 있다.
+나의 경우, 다음과 같이 출력되어, 정상이었다:
+
+$ bitbake -s | grep u-boot
+nativesdk-u-boot-tools                           1:2024.01-r0                                                    
+u-boot-rockchip                                  1:2017.09-r0                                                    
+u-boot-tools                                     1:2024.01-r0                                                    
+u-boot-tools-native                              1:2024.01-r0    
+
+---------------------------------------------------------
+그래서 강제로 U-boot를 빌드하니까, loader.bin 이 생성 됬다:
+---------------------------------------------------------
+u-boot-rockchip을 강제 빌드 (기존 빌드 캐시를 정리한 후 u-boot-rockchip을 다시 빌드):
+
+    $ bitbake -c cleanall u-boot-rockchip
+    $ bitbake u-boot-rockchip
+
+
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ ls -lh
+total 5.9G
+-rw-r--r-- 2 seokgh seokgh 6.6K  3월 31 23:59 core-image-full-cmdline.env
+-rw-r--r-- 2 seokgh seokgh  704  3월 31 23:59 core-image-full-cmdline-generic-gptdisk.wks
+-rw-r--r-- 2 seokgh seokgh 1.7G  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+-rw-r--r-- 2 seokgh seokgh  54K  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh 3.3M  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+-rw-r--r-- 2 seokgh seokgh 443M  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+-rw-r--r-- 2 seokgh seokgh 340K  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2.2G  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh   74  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4 -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.ext4
+lrwxrwxrwx 2 seokgh seokgh   78  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.manifest -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.manifest
+-rw-r--r-- 2 seokgh seokgh  204  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+-rw-r--r-- 2 seokgh seokgh  278  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh   82  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.spdx.tar.zst -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.spdx.tar.zst
+lrwxrwxrwx 2 seokgh seokgh   76  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.tar.gz -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.tar.gz
+lrwxrwxrwx 2 seokgh seokgh   83  3월 31 23:58 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.testdata.json -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.testdata.json
+-rw-r--r-- 2 seokgh seokgh 2.2G  4월  1 00:02 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ufs.wic
+-rw-r--r-- 2 seokgh seokgh 1.7G  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+lrwxrwxrwx 2 seokgh seokgh   73  3월 31 23:59 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.wic -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs-20250331145439.wic
+lrwxrwxrwx 2 seokgh seokgh   19  4월  1 00:09 idblock.img -> idblock.img-2017.09
+-rwxr-xr-x 2 seokgh seokgh 310K  4월  1 00:09 idblock.img-2017.09
+lrwxrwxrwx 2 seokgh seokgh   18  4월  1 00:09 loader.bin -> loader.bin-2017.09
+-rwxr-xr-x 2 seokgh seokgh 477K  4월  1 00:09 loader.bin-2017.09
+lrwxrwxrwx 2 seokgh seokgh   67  3월 31 23:59 package-file -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.package-file
+lrwxrwxrwx 2 seokgh seokgh   64  3월 31 23:59 parameter -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.parameter
+lrwxrwxrwx 2 seokgh seokgh   59  4월  1 00:01 rootfs.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.ext4
+lrwxrwxrwx 2 seokgh seokgh   44  4월  1 00:09 uboot.img -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh   62  4월  1 00:09 u-boot-rockchip-initial-env -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+lrwxrwxrwx 2 seokgh seokgh   62  4월  1 00:09 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b -> u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh 3.8K  4월  1 00:09 u-boot-rockchip-initial-env-rockchip-rk3588-rock-5b-2017.09-r0
+-rw-r--r-- 2 seokgh seokgh 4.0M  4월  1 00:09 uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh   44  4월  1 00:09 uboot-rockchip-rk3588-rock-5b.bin -> uboot-rockchip-rk3588-rock-5b-2017.09-r0.bin
+lrwxrwxrwx 2 seokgh seokgh   65  3월 31 23:59 update.img -> core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.update.img
+
+
+
+
+//
+//flash loader  (매번 먼저 이 파일을 굽어야 .wic 파일도 굽을 수가 있었다.)
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool db loader.bin
+Downloading bootloader succeeded.
+
+//
+//flash .wic file (부팅 OK)
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk/build/tmp/deploy/images/rockchip-rk3588-rock-5b $ sudo rkdeveloptool wl 0 core-image-full-cmdline-rockchip-rk3588-rock-5b.rootfs.wic
+Write LBA from file (100%)
+
+
+
+
+----------------------------------------------------------------------------------
+bitbake 의 clean 명령어들인 clean, cleansstate, cleanall 동작의 차이에 대해서:
+----------------------------------------------------------------------------------
+각각의 `bitbake` 명령어는 다음과 같은 작업을 수행합니다:
+
+- bitbake -c clean:
+        이 명령어는 임시작업폴더(`tmp/work`)에 위치한 파일들을 삭제하지만,
+        Shared State Cache (sstate-cache)에 있는 빌드된 결과물은 삭제하지 않습니다.
+        따라서 실제 레시피에 변경이 없다면 Bitbake는 캐시 폴더의 결과물을 재사용하여 이미지를 생성할 수 있습니다.
+
+- bitbake -c cleansstate:
+        이 명령어는 임시 파일과 함께 sstate-cache에 있는 캐시 파일까지 모두 삭제합니다.
+        따라서 이미지 생성 시 레시피는 처음부터 재빌드됩니다.
+
+- bitbake -c cleanall:
+        이 명령어는 임시작업폴더, sstate-cache에 있는 내용과 함께 해당 레시피와 관련된 다운로드된 파일들도 삭제합니다.
+        하지만, 전체 'Download 폴더'를 삭제하지는 않으며, 특정 레시피와 관련된 파일만 삭제합니다.
+        파일에 변경이 있어 다시 다운로드가 필요한 경우에 이 명령어를 사용하여 관련 파일들을 삭제한 후 다시 빌드할 수 있습니다.
+
+
+
+
+
+----------------------------------------------------------------------------------
+미리 소스 다운로드:
+네트워크 문제로 빌드가 멈추는 경우 다음 명령으로 미리 소스를 다운로드할 수 있습니다.
+----------------------------------------------------------------------------------
+bitbake core-image-weston -c fetchall
+
+
+----------------------------------------------------------------------------------
+특정 이미지(core-image-weston)에 필요한 패키지만 다운로드
+----------------------------------------------------------------------------------
+bitbake -k -c fetch core-image-weston
+
+이 방법은 core-image-weston을 빌드하는 데 필요한 모든 의존성 패키지의 소스를 미리 다운로드합니다.
+
+
+----------------------------------------------------------------------------------
+빌드 캐시 정리 후 다시 빌드
+----------------------------------------------------------------------------------
+Yocto의 캐시가 손상되었을 수도 있습니다. 다음 명령으로 캐시를 정리하고 다시 빌드하세요.
+
+bitbake -c cleansstate core-image-weston
+bitbake core-image-weston
+
+
+----------------------------------------------------------------------------------
+glibc 및 elfutils 빌드 캐시 정리 후 다시 빌드
+----------------------------------------------------------------------------------
+Yocto의 빌드 캐시가 꼬였을 가능성이 있으므로, 해당 패키지를 먼저 깨끗이 지운 후 다시 빌드합니다.
+
+bitbake -c cleansstate glibc
+bitbake -c cleansstate elfutils
+
+bitbake core-image-weston
+
+-c cleansstate는 소스 코드까지 제거하고 완전히 처음부터 다시 빌드하게 만듭니다.
+
+----------------------------------------------------------------------------------
+tmp 및 sstate-cache 정리 후 재빌드
+----------------------------------------------------------------------------------
+Yocto 빌드 중간에 실패한 경우, 임시 파일을 정리하고 다시 시도하는 것이 좋습니다.
+
+bitbake -c cleansstate glibc
+bitbake -c cleansstate elfutils
+bitbake -c clean glibc
+bitbake -c clean elfutils
+rm -rf tmp sstate-cache
+
+bitbake core-image-weston
+
+위 명령어로 캐시를 정리한 후 다시 빌드를 시도하세요.
+
+----------------------------------------------------------------------------------
+오염된 빌드 캐시 정리
+----------------------------------------------------------------------------------
+Yocto에서 빌드가 실패하면 한 번 정리하고 다시 빌드하면 해결될 수도 있습니다:
+bitbake -c cleanall vim-native
+bitbake vim-native
+
+혹은 Yocto 빌드 캐시를 더 강력하게 정리한 후 다시 빌드:
+bitbake -c cleansstate vim-native
+bitbake vim-native
+
+----------------------------------------------------------------------------------
+기존 빌드 이미지 정리 (Clean)
+----------------------------------------------------------------------------------
+현재 빌드한 이미지를 삭제하려면 cleansstate 또는 clean 명령어를 사용할 수 있다.  일반적으로 cleansstate가 더 철저하게 정리하므로, 이를 사용.
+
+    $ bitbake -c cleansstate <현재 빌드한 이미지>
+    $ bitbake -c cleansstate core-image-sato      //이 명령어는 현재 타겟의 모든 빌드 데이터를 삭제하고 소스 코드만 남긴다.
+
+💡 clean과의 차이점:
+    bitbake -c clean <타겟>       //빌드 아티팩트만 삭제 (소스 코드와 다운로드한 파일 유지)
+    bitbake -c cleansstate <타겟> //소스 코드 빼고 모든 빌드 결과 삭제 (다운로드한 파일도 유지)
+
+
+
+----------------------------------------------------------------------------------
+You can easily list all the targets/recipes (.bb files) in your workspace doing:
+----------------------------------------------------------------------------------
+
+     $ bitbake-layers show-recipes
+
+If you want only the recipes for your image, do:
+
+    $ bitbake-layers show-recipes "<image_name>"
+
+
+
+----------------------------------------------------------------------------------
+DISTRO_FEATURES 가 제대로 설정되었는지 확인
+----------------------------------------------------------------------------------
+//
+//DISTRO_FEATURES=로 시작하는 줄만 검색
+//
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ bitbake -e | grep ^DISTRO_FEATURES=
+DISTRO_FEATURES="acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget usbhost wifi xattr nfs zeroconf pci 3g nfc  vfat seccomp opengl  multiarch wayland  wayland egl opengl  sysvinit pulseaudio gobject-introspection-data ldconfig"
+
+  출력 결과에 "x11"이 포함되어 있지 않다면, 설정이 적용되지 않은 것이다.
+
+
+
+----------------------------------------------------------------------------------
+grep ^DISTRO_FEATURES --include=*.conf -Rn
+----------------------------------------------------------------------------------
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ grep ^DISTRO_FEATURES --include=*.conf -Rn
+meta-poky/conf/distro/poky-tiny.conf:72:DISTRO_FEATURES_TINY = "pci"
+meta-poky/conf/distro/poky-tiny.conf:73:DISTRO_FEATURES_NET = "ipv4 ipv6"
+meta-poky/conf/distro/poky-tiny.conf:74:DISTRO_FEATURES_USB = "usbhost"
+meta-poky/conf/distro/poky-tiny.conf:78:DISTRO_FEATURES = "${DISTRO_FEATURES_TINY} \
+meta-poky/conf/distro/poky-tiny.conf:85:DISTRO_FEATURES:class-native = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+meta-poky/conf/distro/poky-tiny.conf:86:DISTRO_FEATURES:class-nativesdk = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+meta-poky/conf/distro/poky.conf:20:DISTRO_FEATURES ?= "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+build/conf/include/display.conf:4:DISTRO_FEATURES:append = " ${@d.getVar('DISPLAY_PLATFORM')}"
+build/conf/include/display.conf:5:DISTRO_FEATURES:remove = " ${@'x11' if d.getVar('DISPLAY_PLATFORM') == 'wayland' else 'wayland'}"
+build/conf/include/display.conf:10:DISTRO_FEATURES:append = " egl"
+build/conf/include/common.conf:286:DISTRO_FEATURES:remove = "ptest"
+build/conf/include/common.conf:288:DISTRO_FEATURES:remove = "vulkan"
+build/conf/include/glmark2.conf:2:DISTRO_FEATURES:append = " opengl"
+build/conf/local.conf:6:DISTRO_FEATURES:append = " x11"
+build/conf/rockchip-rk3588-rock-5b.conf:6:DISTRO_FEATURES:append = " x11"
+poky/meta/conf/bitbake.conf:903:DISTRO_FEATURES ?= ""
+poky/meta/conf/bitbake.conf:917:DISTRO_FEATURES_NATIVE ?= "acl x11 ipv6 xattr"
+poky/meta/conf/bitbake.conf:918:DISTRO_FEATURES_NATIVESDK ?= "x11"
+poky/meta/conf/bitbake.conf:922:DISTRO_FEATURES_FILTER_NATIVE ?= "api-documentation debuginfod opengl wayland"
+poky/meta/conf/bitbake.conf:923:DISTRO_FEATURES_FILTER_NATIVESDK ?= "api-documentation debuginfod opengl wayland"
+poky/meta/conf/bitbake.conf:925:DISTRO_FEATURES_BACKFILL = "pulseaudio sysvinit gobject-introspection-data ldconfig"
+poky/meta/conf/documentation.conf:145:DISTRO_FEATURES[doc] = "The features enabled for the distribution."
+poky/meta/conf/documentation.conf:146:DISTRO_FEATURES_BACKFILL[doc] = "Features to be added to DISTRO_FEATURES if not also present in DISTRO_FEATURES_BACKFILL_CONSIDERED. This variable is set in the meta/conf/bitbake.conf file and it is not intended to be user-configurable."
+poky/meta/conf/documentation.conf:147:DISTRO_FEATURES_BACKFILL_CONSIDERED[doc] = "Features from DISTRO_FEATURES_BACKFILL that should not be backfilled (i.e. added to DISTRO_FEATURES) during the build."
+poky/meta-poky/conf/distro/poky-tiny.conf:72:DISTRO_FEATURES_TINY = "pci"
+poky/meta-poky/conf/distro/poky-tiny.conf:73:DISTRO_FEATURES_NET = "ipv4 ipv6"
+poky/meta-poky/conf/distro/poky-tiny.conf:74:DISTRO_FEATURES_USB = "usbhost"
+poky/meta-poky/conf/distro/poky-tiny.conf:78:DISTRO_FEATURES = "${DISTRO_FEATURES_TINY} \
+poky/meta-poky/conf/distro/poky-tiny.conf:85:DISTRO_FEATURES:class-native = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+poky/meta-poky/conf/distro/poky-tiny.conf:86:DISTRO_FEATURES:class-nativesdk = "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+poky/meta-poky/conf/distro/poky.conf:20:DISTRO_FEATURES ?= "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ 
+seokgh@ubuntu22 ~/Documents/work/yocto/yocto-rockchip-sdk $ 
+
+
+
+----------------------------------------------------------------------------------
+몇개 .conf 파일 지간의 관계
+----------------------------------------------------------------------------------
+build/conf/include/demo.conf 에서  include display.conf 를 하고 있음.
+
+build/conf/include/display.conf:5:DISTRO_FEATURES:remove = " ${@'x11' if d.getVar('DISPLAY_PLATFORM') == 'wayland' else 'wayland'}"
+
+local.conf에서 또 이 두 파일을 포함하고 있음:
+include include/common.conf
+include include/demo.conf
+
+
+----------------------------------------------------------------------------------
+몇몇 image recipes path: (즉, $ source ./oe-init-build-env 로 나오는 리스트)
+----------------------------------------------------------------------------------
+$ ll  poky/meta/recipes-core/images/
+total 60
+drwxrwxr-x  3 seokgh seokgh 4096  4월  1 21:59 ./
+drwxrwxr-x 45 seokgh seokgh 4096  3월 25 23:27 ../
+drwxrwxr-x  2 seokgh seokgh 4096  3월 22 20:08 build-appliance-image/
+-rw-rw-r--  1 seokgh seokgh 6220  3월 25 23:27 build-appliance-image_15.0.0.bb
+-rw-rw-r--  1 seokgh seokgh  148  3월 22 20:08 core-image-base.bb
+-rw-rw-r--  1 seokgh seokgh  691  3월 22 20:08 core-image-initramfs-boot.bb
+-rw-rw-r--  1 seokgh seokgh  332  3월 22 20:08 core-image-minimal.bb
+-rw-rw-r--  1 seokgh seokgh  174  3월 22 20:08 core-image-minimal-dev.bb
+-rw-rw-r--  1 seokgh seokgh 1200  3월 25 23:27 core-image-minimal-initramfs.bb
+-rw-rw-r--  1 seokgh seokgh  270  3월 22 20:08 core-image-minimal-mtdutils.bb
+-rw-rw-r--  1 seokgh seokgh  775  3월 22 20:08 core-image-ptest-all.bb
+-rw-rw-r--  1 seokgh seokgh 1610  3월 25 23:27 core-image-ptest.bb
+-rw-rw-r--  1 seokgh seokgh  127  3월 22 20:08 core-image-ptest-fast.bb
+-rw-rw-r--  1 seokgh seokgh 1704  3월 25 23:27 core-image-tiny-initramfs.bb
+
+
+$ ll ./poky/meta/recipes-graphics/images/
+total 20
+drwxrwxr-x  2 seokgh seokgh 4096  4월  1 22:01 ./
+drwxrwxr-x 50 seokgh seokgh 4096  3월 25 23:27 ../
+-rw-rw-r--  1 seokgh seokgh  356  3월 22 20:08 core-image-weston.bb
+-rw-rw-r--  1 seokgh seokgh  572  3월 25 23:27 core-image-weston-sdk.bb
+-rw-rw-r--  1 seokgh seokgh  279  3월 22 20:08 core-image-x11.bb
+
+
+$ ll ./poky/meta/recipes-extended/images
+total 24
+drwxrwxr-x  2 seokgh seokgh 4096  3월 22 20:08 ./
+drwxrwxr-x 89 seokgh seokgh 4096  3월 25 23:27 ../
+-rw-rw-r--  1 seokgh seokgh  309  3월 22 20:08 core-image-full-cmdline.bb
+-rw-rw-r--  1 seokgh seokgh  954  3월 22 20:08 core-image-kernel-dev.bb
+-rw-rw-r--  1 seokgh seokgh  615  3월 22 20:08 core-image-testcontroller.bb
+-rw-rw-r--  1 seokgh seokgh  716  3월 22 20:08 core-image-testcontroller-initramfs.bb
+
+$ ll ./poky/meta/recipes-sato/images/
+total 20
+drwxrwxr-x  2 seokgh seokgh 4096  3월 28 00:34 ./
+drwxrwxr-x 22 seokgh seokgh 4096  3월 22 20:08 ../
+-rw-rw-r--  1 seokgh seokgh  773  3월 22 20:08 core-image-sato.bb
+-rw-rw-r--  1 seokgh seokgh  306  3월 22 20:08 core-image-sato-dev.bb
+-rw-rw-r--  1 seokgh seokgh  566  3월 25 23:27 core-image-sato-sdk.bb
