@@ -1,0 +1,2 @@
+doc/rockchip_sdk_docs/Common/CAMERA/ISP2X/Rockchip_Tuning_Guide_ISP21_CN_v2.1.0.pdf filter=lfs diff=lfs merge=lfs -text
+doc/rockchip_sdk_docs/Common/CAMERA/ISP3X/Rockchip_Tuning_Guide_ISP30_CN_v1.1.0.pdf filter=lfs diff=lfs merge=lfs -text
