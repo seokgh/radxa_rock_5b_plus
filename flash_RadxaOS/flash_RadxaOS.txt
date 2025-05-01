@@ -1,0 +1,16 @@
+step1.
+  https://docs.radxa.com/en/rock5/rock5b/getting-started/install-os/boot_from_sd_card?Platform=Linux
+  에 써 놓은 것 처럼 balena-etcher_1.18.11_amd64.deb 를 설치.
+
+  Please download balena-etcher_1.18.11_amd64.deb. Once the download is complete, please install it by executing the following command in the terminal:
+
+  sudo dpkg -i balena-etcher_1.18.11_amd64.deb
+
+
+step2.
+  https://docs.radxa.com/en/rock5/rock5b/download
+  에서 image file 다운로드해서 굽는다.
+
+  이미지 파일 이름:
+      ROCK 5B+ Debian(kernel 6.1): rock-5b-plus_bookworm_kde_b2   ---> rock-5b-plus_bookworm_kde_b2.output.img.xz
+
