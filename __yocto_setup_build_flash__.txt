@@ -257,8 +257,11 @@ lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img-rockchip-rk3588-rock-5
 
 
 ----------------------------------------------------------------------------------
-step8. Flash to SD Card:    //먼저 Enter to Maskrom 하고 할 것
+step8. Flash to SD Card:    
 ----------------------------------------------------------------------------------
+//
+//먼저 Enter to Maskrom 해야 함: 두 key 옆에 TYPE-C 포트에는 미리 꽂아 놓고, Maskrom 버튼 누른 상태에서 Power USB 을 꽂으면 된다.
+//
 If you want to boot the image on microSD card the follow below steps.
 
 $ cd tmp-glibc/deploy/images/\<MACHINE\>
@@ -278,6 +281,11 @@ step8.1 Flash to eMMC:         //부팅이 됬다, 먼저 Enter to Maskrom 하�
 ----------------------------------------------------------------------------------
 SD Card 를 먼저 빼고! 
 UART 설정은 1500000 bps
+
+
+//
+//먼저 Enter to Maskrom 해야 함: 두 key 옆에 TYPE-C 포트에는 미리 꽂아 놓고, Maskrom 버튼 누른 상태에서 Power USB 을 꽂으면 된다.
+//
 
 //
 //flash loader  (매번 먼저 이 파일을 굽어야 .wic 파일도 굽을 수가 있었다.)
