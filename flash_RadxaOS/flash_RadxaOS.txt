@@ -1,0 +1,47 @@
+step1.
+  https://docs.radxa.com/en/rock5/rock5b/getting-started/install-os/boot_from_sd_card?Platform=Linux
+  에 써 놓은 것 처럼 balena-etcher_1.18.11_amd64.deb 를 설치.
+
+  Please download balena-etcher_1.18.11_amd64.deb. Once the download is complete, please install it by executing the following command in the terminal:
+
+  sudo dpkg -i balena-etcher_1.18.11_amd64.deb
+
+
+step2.
+  https://docs.radxa.com/en/rock5/rock5b/download
+  에서 image file 다운로드해서 굽는다.
+
+  이미지 파일 이름:
+      ROCK 5B+ Debian(kernel 6.1): rock-5b-plus_bookworm_kde_b2   ---> rock-5b-plus_bookworm_kde_b2.output.img.xz
+
+
+------------------------------------------------------------------------------------
+ROCK 5B (RK3588)의 부트로더 로직
+------------------------------------------------------------------------------------
+ROCK 5B (RK3588)의 부트로더 로직은 다음과 같습니다:
+
+    eMMC가 삽입되어 있고 부팅 가능한 경우 → 무조건 eMMC에서 부팅 시도
+
+    eMMC가 제거되어 있거나 부팅 실패할 때 → SD 카드 부팅 시도
+
+    부트로더(BootROM)는 eMMC를 우선시함
+
+즉, eMMC에 부트로더가 존재하면 SD 카드의 부트로더는 무시됩니다.
+
+------------------------------------------------------------------------------------
+SD Card 로 부터 부팅을 하고 싶으면, eMMC의 첫 16 MB영역을 지워야 한다.
+------------------------------------------------------------------------------------
+먼저 부트로더와 환경영역이 있는 처음 16MiB만 정확히 0으로 덮어씁니다.
+
+# 16MiB 크기의 empty 이미지 파일 생성
+$ dd if=/dev/zero of=empty16M.img bs=1M count=16
+
+#
+# loader.bin 로딩
+# MaskROM 모드에 들어가서 아래 명령을 실행하면 된다.
+$ sudo rkdeveloptool db loader.bin
+
+# eMMC의 시작 16MiB만 삭제
+$ sudo rkdeveloptool wl 0 empty16M.img
+
+이렇게 eMMC 의 첫 16 MB 영역을 지우고, SD Card를 꽂으니 SD Card로 부터 부팅이 됬다.
