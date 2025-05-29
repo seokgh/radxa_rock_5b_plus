@@ -255,9 +255,60 @@ lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img -> zboot.img--6.1-r0-r
 -rw-r--r-- 2 seokgh seokgh   17M  3월 26 16:17 zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
 lrwxrwxrwx 2 seokgh seokgh    60  3월 26 16:17 zboot.img-rockchip-rk3588-rock-5b.bin -> zboot.img--6.1-r0-rockchip-rk3588-rock-5b-20250326071103.bin
 
+아래는 디렉토리 내 주요 파일들에 대한 설명입니다:
+----------------------------------------
+부팅 관련 파일
+----------------------------------------
+파일명:							설명:
+boot.img						부팅 이미지로, 커널 및 초기 램디스크 등이 포함됩니다. Android 또는 일부 리눅스 시스템에서 사용됩니다.
+Image							빌드된 Linux 커널 바이너리입니다 (zImage 또는 Image 형식).
+zboot.img						압축된 커널 이미지 또는 특수 부트 형식으로, Rockchip 펌웨어 업데이트 시 사용됩니다.
+rk3588-rock-5b.dtb				장치 트리 블롭(Device Tree Blob)으로, 보드 하드웨어 정보를 커널에 제공합니다.
+
+----------------------------------------
+루트 파일시스템 관련
+----------------------------------------
+파일명:							설명:
+core-image-weston-*.ext4		ext4 형식의 루트 파일시스템 이미지입니다. 실제 보드에서 rootfs로 마운트됩니다.
+core-image-weston-*.wic			WIC 포맷의 전체 디스크 이미지로, 부트파티션 + 루트파티션 포함. SD카드나 eMMC에 직접 굽기 용이합니다.
+core-image-weston-*.tar.gz		루트 파일시스템을 압축한 tar.gz. NFS 부팅이나 수동 설치 시 유용합니다.
+core-image-weston-*.ufs.wic		특정 환경(e.g., UFS 저장장치)에 최적화된 WIC 이미지입니다.
+core-image-weston-*.update.img	Rockchip 전용 업데이트 이미지 형식으로, RKDevTool이나 rkunpack 등에서 사용 가능합니다.
+rootfs.img						ext4 포맷 루트파일시스템의 심볼릭 링크 (위 ext4 파일과 동일).
+
+----------------------------------------
+U-Boot / 부트로더 관련
+----------------------------------------
+파일명							설명
+uboot.img						Rockchip용 부트로더 이미지입니다.
+uboot-rockchip-*.bin			실제 U-Boot 바이너리 파일입니다.
+idblock.img	Rockchip 			SoC에서 부트로더를 부팅하기 위한 초기 부트코드(ROM 코드가 로드).
+loader.bin	Rockchip 			부트체인에서 사용되는 중간 로더 이미지.
+u-boot-rockchip-initial-env*	U-Boot 환경 변수 초기값 설정을 위한 텍스트/바이너리 데이터.
+
+----------------------------------------
+커널 모듈 관련
+----------------------------------------
+파일명							설명
+modules-*.tgz					커널 모듈 압축 파일. 부팅 후 /lib/modules에 설치될 수 있음.
+
+----------------------------------------
+메타/구성 파일들
+----------------------------------------
+파일명							설명
+*.wks							WIC 이미지 생성을 위한 kickstart 스크립트입니다. 파티션 레이아웃 정의 포함.
+*.manifest						루트파일시스템에 포함된 패키지 목록입니다. 어떤 소프트웨어가 포함됐는지 확인용.
+*.spdx.tar.zst					SPDX 형식의 소프트웨어 라이선스 메타데이터. 컴플라이언스 목적.
+*.testdata.json					테스트 및 검증용 데이터. QA나 이미지 비교에 사용.
+*.env							빌드된 이미지에 대한 환경 설정 정보입니다.
+*.package-file					Rockchip 펌웨어 패키징 시 사용되는 구성 파일.
+*.parameter						Rockchip에서 사용되는 파티션 설정 정보를 포함하는 파일.
+
+
+
 
 ----------------------------------------------------------------------------------
-step8. Flash to SD Card:    
+step8. Flash to SD Card:
 ----------------------------------------------------------------------------------
 //
 //먼저 Enter to Maskrom 해야 함: 두 key 옆에 TYPE-C 포트에는 미리 꽂아 놓고, Maskrom 버튼 누른 상태에서 Power USB 을 꽂으면 된다.
