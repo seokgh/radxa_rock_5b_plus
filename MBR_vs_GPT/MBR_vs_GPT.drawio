@@ -1,0 +1,85 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="syHtprAJOGaXO_893Dxx">
+    <mxGraphModel dx="2278" dy="888" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="_noo6ePnbJWnhknVWwzp-1" value="Master Boot Code" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="280" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-2" value="1st Partition Table Entry" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="320" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-3" value="2nd Partition Table Entry" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="400" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-4" value="3rd Partition Table Entry" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="480" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-5" value="4th Partition Table Entry" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="560" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-6" value="0x55, 0xAA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="640" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;startFill=0;" edge="1" parent="1" source="_noo6ePnbJWnhknVWwzp-7" target="_noo6ePnbJWnhknVWwzp-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-7" value="Boot Signature" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="640" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-10" value="Primary Partition&lt;br&gt;(C:)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="680" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-11" value="Primary Partition&lt;br&gt;(D:)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="800" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-12" value="Primary Partition&lt;br&gt;(E:)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="920" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-13" value="Logical Partition&lt;br&gt;(F:)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="1040" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-14" value="Logical Partition&lt;br&gt;(G:)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="1120" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-15" value="Logical Partition&lt;br&gt;(n:)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-160" y="1200" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-18" value="MBR (Master Boot Record) 방식" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry x="-155" y="190" width="190" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-20" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="70" y="1050" width="180" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-16" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;direction=west;" vertex="1" parent="_noo6ePnbJWnhknVWwzp-20">
+          <mxGeometry width="30" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-17" value="Entended&lt;br&gt;Parttion" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="_noo6ePnbJWnhknVWwzp-20">
+          <mxGeometry x="30" y="80" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-21" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="60" y="330" width="180" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-22" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;direction=west;" vertex="1" parent="_noo6ePnbJWnhknVWwzp-21">
+          <mxGeometry width="30" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-23" value="Parttion&lt;br&gt;Table" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="_noo6ePnbJWnhknVWwzp-21">
+          <mxGeometry x="30" y="109.09090909090908" width="150" height="81.81818181818181" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-24" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="320" y="280" width="280" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-25" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;direction=west;" vertex="1" parent="_noo6ePnbJWnhknVWwzp-24">
+          <mxGeometry width="30" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-26" value="Master Boot Record" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="_noo6ePnbJWnhknVWwzp-24">
+          <mxGeometry x="30" y="145.45" width="250" height="109.09" as="geometry" />
+        </mxCell>
+        <mxCell id="_noo6ePnbJWnhknVWwzp-8" value="마지막 2 byte, 유효한 MBR 인지 체크용&lt;br&gt;무효이면:&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;No bootable device found" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="310" y="710" width="230" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
